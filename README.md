@@ -17,7 +17,7 @@ The only prerequisites for using Batch.dart are an understanding of the basic sy
 
 ## 1.2. Basics
 
-- Create a minimal and basic batch application
+- [Create a minimal and basic batch application](https://github.com/batch-dart/examples/blob/main/examples/01_basics/01/bin/example.dart)
 - Create a batch application consisting of multiple job nets
 - Create a parallel processing tasks
 - Output logs to the file
