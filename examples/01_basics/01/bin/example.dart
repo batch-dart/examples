@@ -2,8 +2,6 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
-import 'dart:async';
-
 import 'package:batch/batch.dart';
 
 void main(List<String> args) => BatchApplication()
@@ -19,7 +17,7 @@ void main(List<String> args) => BatchApplication()
 
 class SayHelloWorldTask extends Task<SayHelloWorldTask> {
   @override
-  Future<void> execute(ExecutionContext context) async {
+  void execute(ExecutionContext context) {
     // It outputs on the console in default.
     log.info('Hello, World!');
   }
