@@ -13,9 +13,17 @@ void main(List<String> args) => BatchApplication()
       ..nextStep(
         Step(
           name: 'Throw Exception Step',
-          skipConfig: SkipConfiguration(
-            //! Define the exception to skip.
-            skippableExceptions: [FormatException()],
+          retryConfig: RetryConfiguration(
+            //! Define the exception to retry.
+            retryableExceptions: [FormatException()],
+            //! Define the retry count.
+            maxAttempt: 5,
+            //! Define the retry interval.
+            backOff: Duration(milliseconds: 5),
+            //! Do recover when the all retries are failed.
+            onRecover: (context) {
+              log.info('Recovered from exception.');
+            },
           ),
         )..registerTask(ThrowFormatExceptionTask()),
       )

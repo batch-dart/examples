@@ -7,42 +7,19 @@ import 'package:batch/batch.dart';
 void main(List<String> args) => BatchApplication()
   ..addJob(
     Job(
-      name: 'Job',
+      name: 'Shutdown Job',
       schedule: CronParser(value: '*/2 * * * *'), // Execute every 2 minutes.
-    )
-      ..nextStep(
-        Step(
-          name: 'Throw Exception Step',
-          retryConfig: RetryConfiguration(
-            //! Define the exception to retry.
-            retryableExceptions: [FormatException()],
-            //! Define the retry count.
-            maxAttempt: 5,
-            //! Define the retry interval.
-            backOff: Duration(milliseconds: 5),
-            //! Do recover when the all retries are failed.
-            onRecover: (context) {
-              log.info('Recovered from exception.');
-            },
-          ),
-        )..registerTask(ThrowFormatExceptionTask()),
-      )
-      ..nextStep(
-        Step(name: 'Say Hello World Step')..registerTask(SayHelloWorldTask()),
+    )..nextStep(
+        //! You can shutdown this application with `shutdown()`.
+        Step(name: 'Shutdown Step')..shutdown(),
       ),
   )
   ..run();
 
-class ThrowFormatExceptionTask extends Task<ThrowFormatExceptionTask> {
-  @override
-  void execute(ExecutionContext context) {
-    throw FormatException();
-  }
-}
-
 class SayHelloWorldTask extends Task<SayHelloWorldTask> {
   @override
   void execute(ExecutionContext context) {
-    log.info('Hello, World!');
+    //! You also can shutdown with following method instead of `shutdown()`.
+    super.shutdown();
   }
 }

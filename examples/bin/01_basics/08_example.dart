@@ -4,14 +4,15 @@
 
 import 'package:batch/batch.dart';
 
-//! Run this example with `dart run ./examples/bin/01_basics/08_example.dart -n batch-dart -r`.
+//! Run this example with `dart run ./examples/bin/01_basics/09_example.dart -n batch-dart -r`.
 void main(List<String> args) => BatchApplication(
-      //! By default, all command line arguments passed are set as SharedParameters
-      //! and can be referenced through ExecutionContext.
-      //!
-      //! See the example below if you want to generate objects to be set in SharedParameters
-      //! using command line arguments at the start of a batch application.
       args: argParser.parse(args),
+      onLoadArgs: (args, addSharedParameter) {
+        if (args['release']) {
+          addSharedParameter(
+              key: 'appName', value: 'Release ${args['appName']}');
+        }
+      },
     )
       ..addJob(
         Job(
@@ -35,9 +36,10 @@ class OutputCommandLineArgumentsTask
     extends Task<OutputCommandLineArgumentsTask> {
   @override
   void execute(ExecutionContext context) {
-    //! By default, all command line arguments passed are set as SharedParameters
-    //! and can be referenced through ExecutionContext.
     log.info(context.sharedParameters['appName']);
-    log.info(context.sharedParameters['release']);
+
+    //! If the "onLoadArgs" callback is defined, the command line arguments are not set to SharedParameters
+    //! unless explicitly defined for processing.
+    log.info(context.sharedParameters.contains('release') == false);
   }
 }
