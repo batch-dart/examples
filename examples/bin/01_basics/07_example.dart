@@ -4,32 +4,37 @@
 
 import 'package:batch/batch.dart';
 
-//! Run this example with `dart run ./examples/bin/01_basics/08_example.dart -n batch-dart -r`.
+//! Run this example with `dart run ./examples/bin/01_basics/07_example.dart -n batch-dart -r`.
 void main(List<String> args) => BatchApplication(
       //! By default, all command line arguments passed are set as SharedParameters
       //! and can be referenced through ExecutionContext.
       //!
       //! See the example below if you want to generate objects to be set in SharedParameters
       //! using command line arguments at the start of a batch application.
-      args: argParser.parse(args),
-    )
-      ..addJob(
-        Job(
-          name: 'Say Hello World Job',
-          schedule:
-              CronParser(value: '*/2 * * * *'), // Execute every 2 minutes.
-        )..nextStep(
-            Step(name: 'Say Hello World Step')
-              ..registerTask(OutputCommandLineArgumentsTask()),
-          ),
-      )
-      ..run();
+      args: args,
+      argsConfigBuilder: (parser) {
+        //! You can use args library and you can build your own configuration here.
+        //! See more information at https://pub.dev/packages/args
+        parser
+          ..addOption('appName', abbr: 'n')
+          ..addFlag('release', abbr: 'r');
+      },
+      jobs: [OutputCommandLineArgumentsJob()],
+    )..run();
 
-//! You can use args library.
-//! See more information at https://pub.dev/packages/args
-ArgParser get argParser => ArgParser()
-  ..addOption('appName', abbr: 'n')
-  ..addFlag('release', abbr: 'r');
+class OutputCommandLineArgumentsJob implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Output Command Line Arguments Job',
+        schedule: CronParser('*/2 * * * *'), // Execute every 2 minutes.
+        steps: [
+          Step(
+            name: 'Output Command Line Arguments Step',
+            task: OutputCommandLineArgumentsTask(),
+          ),
+        ],
+      );
+}
 
 class OutputCommandLineArgumentsTask
     extends Task<OutputCommandLineArgumentsTask> {

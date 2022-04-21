@@ -4,16 +4,23 @@
 
 import 'package:batch/batch.dart';
 
-void main(List<String> args) => BatchApplication()
-  ..addJob(
-    Job(
-      name: 'Say Hello World Job',
-      schedule: CronParser(value: '*/2 * * * *'), // Execute every 2 minutes.
-    )..nextStep(
-        Step(name: 'Say Hello World Step')..registerTask(SayHelloWorldTask()),
-      ),
-  )
-  ..run();
+void main(List<String> args) => BatchApplication(
+      jobs: [SayHelloWorldJob()],
+    )..run();
+
+class SayHelloWorldJob implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Say Hello World Job',
+        schedule: CronParser('*/2 * * * *'), // Execute every 2 minutes.
+        steps: [
+          Step(
+            name: 'Say Hello World Step',
+            task: SayHelloWorldTask(),
+          ),
+        ],
+      );
+}
 
 class SayHelloWorldTask extends Task<SayHelloWorldTask> {
   @override

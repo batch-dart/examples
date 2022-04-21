@@ -4,26 +4,28 @@
 
 import 'package:batch/batch.dart';
 
-void main(List<String> args) => BatchApplication()
-  ..addJob(
-    Job(
-      name: 'Job',
-      schedule: CronParser(value: '*/2 * * * *'), // Execute every 2 minutes.
-    )
-      ..nextStep(
-        Step(
-          name: 'Throw Exception Step',
-          skipConfig: SkipConfiguration(
-            //! Define the exception to skip.
-            skippableExceptions: [FormatException()],
+void main(List<String> args) => BatchApplication(
+      jobs: [TestSkippableExceptionJob()],
+    )..run();
+
+class TestSkippableExceptionJob implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Job',
+        schedule: CronParser('*/2 * * * *'), // Execute every 2 minutes.
+        steps: [
+          Step(
+            name: 'Throw Exception Step',
+            task: ThrowFormatExceptionTask(),
+            skipConfig: SkipConfiguration(
+              //! Define the exception to skip.
+              skippableExceptions: [FormatException()],
+            ),
           ),
-        )..registerTask(ThrowFormatExceptionTask()),
-      )
-      ..nextStep(
-        Step(name: 'Say Hello World Step')..registerTask(SayHelloWorldTask()),
-      ),
-  )
-  ..run();
+          Step(name: 'Say Hello World Step', task: SayHelloWorldTask()),
+        ],
+      );
+}
 
 class ThrowFormatExceptionTask extends Task<ThrowFormatExceptionTask> {
   @override

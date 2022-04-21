@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:batch/batch.dart';
 
 void main(List<String> args) => BatchApplication(
+      jobs: [SayHelloWorldJob()],
       logConfig: LogConfiguration(
         // Change output configuration to multi.
         output: MultiLogOutput([
@@ -14,18 +15,21 @@ void main(List<String> args) => BatchApplication(
           FileLogOutput(file: File('./test.log')),
         ]),
       ),
-    )
-      ..addJob(
-        Job(
-          name: 'Say Hello World Job',
-          schedule:
-              CronParser(value: '*/2 * * * *'), // Execute every 2 minutes.
-        )..nextStep(
-            Step(name: 'Say Hello World Step')
-              ..registerTask(SayHelloWorldTask()),
+    )..run();
+
+class SayHelloWorldJob implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Say Hello World Job',
+        schedule: CronParser('*/2 * * * *'), // Execute every 2 minutes.
+        steps: [
+          Step(
+            name: 'Say Hello World Step',
+            task: SayHelloWorldTask(),
           ),
-      )
-      ..run();
+        ],
+      );
+}
 
 class SayHelloWorldTask extends Task<SayHelloWorldTask> {
   @override

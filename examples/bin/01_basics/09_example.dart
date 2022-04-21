@@ -4,30 +4,32 @@
 
 import 'package:batch/batch.dart';
 
-void main(List<String> args) => BatchApplication()
-  ..addJob(
-    Job(
-      name: 'Job 1',
-      schedule: CronParser(value: '*/2 * * * *'), // Execute every 2 minutes.
-    )..nextStep(
-        Step(name: 'Switch Branch Step')
-          ..registerTask(SwitchBranchTask())
-          ..createBranchOnSucceeded(
-            to: Step(name: 'On Succeeded Branch')
-              ..registerTask(NotToBeExecutedTask()),
-          )
-          ..createBranchOnFailed(
-            to: Step(name: 'On Failed Branch')
-              ..registerTask(ToBeExecutedTask()),
-          )
-          //! onCompleted branch will always be executed regardless of branch status.
-          ..createBranchOnCompleted(
-            to: Step(name: 'On Completed Branch')
-              ..registerTask(SayHelloWorldTask()),
+void main(List<String> args) => BatchApplication(
+      jobs: [TestBranchJob()],
+    )..run();
+
+class TestBranchJob implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Test Branch Job',
+        schedule: CronParser('*/2 * * * *'), // Execute every 2 minutes.
+        steps: [
+          Step(
+            name: 'Switch Branch Step',
+            task: SwitchBranchTask(),
+            branchesOnSucceeded: [
+              Step(name: 'On Succeeded Branch', task: NotToBeExecutedTask())
+            ],
+            branchesOnFailed: [
+              Step(name: 'On Failed Branch', task: ToBeExecutedTask())
+            ],
+            branchesOnCompleted: [
+              Step(name: 'On Completed Branch', task: SayHelloWorldTask())
+            ],
           ),
-      ),
-  )
-  ..run();
+        ],
+      );
+}
 
 class SwitchBranchTask extends Task<SwitchBranchTask> {
   @override

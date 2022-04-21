@@ -4,28 +4,29 @@
 
 import 'package:batch/batch.dart';
 
-void main(List<String> args) => BatchApplication()
-  ..addJob(
-    Job(
-      name: 'Say Hello World Job',
-      schedule: CronParser(value: '*/2 * * * *'), // Execute every 2 minutes.
-    )..nextStep(
-        Step(name: 'Say Hello Step')
-          ..registerParallel(
-            Parallel(
-              name: 'Compute Heavy Task',
-              tasks: [
-                ComputeHeavyTask(),
-                ComputeHeavyTask(),
-                ComputeHeavyTask(),
-                ComputeHeavyTask(),
-                ComputeHeavyTask(),
-              ],
-            ),
-          ),
-      ),
-  )
-  ..run();
+void main(List<String> args) => BatchApplication(
+      jobs: [DoParallelProcessesJob()],
+    )..run();
+
+class DoParallelProcessesJob implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Parallel Processes Job',
+        schedule: CronParser('*/2 * * * *'), // Execute every 2 minutes.
+        steps: [
+          ParallelStep(
+            name: 'Parallel Processes Step',
+            tasks: [
+              ComputeHeavyTask(),
+              ComputeHeavyTask(),
+              ComputeHeavyTask(),
+              ComputeHeavyTask(),
+              ComputeHeavyTask(),
+            ],
+          )
+        ],
+      );
+}
 
 class ComputeHeavyTask extends ParallelTask<ComputeHeavyTask> {
   @override
