@@ -6,6 +6,7 @@
   - [1.1. Prerequisite](#11-prerequisite)
   - [1.2. Basics](#12-basics)
   - [1.3. Advanced](#13-advanced)
+    - [1.3.1. Twitter BOT](#131-twitter-bot)
   - [1.4. Contribution](#14-contribution)
   - [1.5. Support](#15-support)
   - [1.6. License](#16-license)
@@ -39,11 +40,12 @@ Basic knowledge about **Batch.dart** and examples of its implementation. The fol
 
 ## 1.3. Advanced
 
-This chapter presents an example implementation of a somewhat more advanced customization, which is not required to implement **Batch.dart** and should be ignored if not necessary.
+### 1.3.1. Twitter BOT
 
-- Customize the logging configurations
-- Customize the logging features as you want
-- Customize the scheduling features as you want
+- [[Medium] Create a Twitter Auto-Like App with Batch.dart](https://medium.com/@kato.shinya.dev/develop-an-auto-like-tweets-app-with-batch-dart-876084e256e7)
+- [[Medium] Create a Twitter Auto-Retweet App with Batch.dart](https://medium.com/@kato.shinya.dev/create-a-twitter-auto-retweet-app-with-batch-dart-ad72cf89c5bf)
+- [[Medium] Create a Twitter Auto-Follow App with Batch.dart](https://medium.com/@kato.shinya.dev/create-a-twitter-auto-follow-app-with-batch-dart-cd5da0047baa)
+- [[Medium] Create a Twitter Auto-Tweet App with Batch.dart](https://medium.com/@kato.shinya.dev/create-a-twitter-auto-tweet-app-with-batch-dart-d3d2bf11bbb9)
 
 ## 1.4. Contribution
 
