@@ -6,13 +6,13 @@ import 'dart:io';
 
 import 'package:batch/batch.dart';
 
-void main(List<String> args) => BatchApplication(
+void main(List<String> args) => runWorkflow(
       jobs: [SayHelloWorldJob()],
       logConfig: LogConfiguration(
         // Change output configuration to file.
         output: FileLogOutput(file: File('./test.log')),
       ),
-    )..run();
+    );
 
 class SayHelloWorldJob implements ScheduledJobBuilder {
   @override

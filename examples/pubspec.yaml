@@ -5,7 +5,7 @@ environment:
   sdk: '>=2.16.2 <3.0.0'
 
 dependencies:
-  batch: ^1.2.0
+  batch: ^1.3.0
 
 dev_dependencies:
   lints: ^1.0.0

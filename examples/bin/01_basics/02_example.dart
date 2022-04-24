@@ -4,12 +4,12 @@
 
 import 'package:batch/batch.dart';
 
-void main(List<String> args) => BatchApplication(
+void main(List<String> args) => runWorkflow(
       jobs: [
         SayHelloWorldJob(),
         SayDartIsAwesomeJob(),
       ],
-    )..run();
+    );
 
 class SayHelloWorldJob implements ScheduledJobBuilder {
   @override

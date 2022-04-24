@@ -5,7 +5,7 @@
 import 'package:batch/batch.dart';
 
 //! Run this example with `dart run ./examples/bin/01_basics/07_example.dart -n batch-dart -r`.
-void main(List<String> args) => BatchApplication(
+void main(List<String> args) => runWorkflow(
       //! By default, all command line arguments passed are set as SharedParameters
       //! and can be referenced through ExecutionContext.
       //!
@@ -20,7 +20,7 @@ void main(List<String> args) => BatchApplication(
           ..addFlag('release', abbr: 'r');
       },
       jobs: [OutputCommandLineArgumentsJob()],
-    )..run();
+    );
 
 class OutputCommandLineArgumentsJob implements ScheduledJobBuilder {
   @override

@@ -5,7 +5,7 @@
 import 'package:batch/batch.dart';
 
 //! Run this example with `dart run ./examples/bin/01_basics/08_example.dart -n batch-dart -r`.
-void main(List<String> args) => BatchApplication(
+void main(List<String> args) => runWorkflow(
       args: args,
       argsConfigBuilder: (parser) {
         //! You can use args library and you can build your own configuration here.
@@ -18,7 +18,7 @@ void main(List<String> args) => BatchApplication(
         return args['release'] ? {'appName': 'Release ${args['appName']}'} : {};
       },
       jobs: [OutputCommandLineArgumentsJob()],
-    )..run();
+    );
 
 class OutputCommandLineArgumentsJob implements ScheduledJobBuilder {
   @override

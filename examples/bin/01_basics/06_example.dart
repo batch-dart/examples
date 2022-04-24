@@ -4,7 +4,7 @@
 
 import 'package:batch/batch.dart';
 
-void main(List<String> args) => BatchApplication(
+void main(List<String> args) => runWorkflow(
       jobs: [
         ShouldBeOutputParametersJob(),
         ShouldNotBeOutputParametersJob(),
@@ -15,7 +15,7 @@ void main(List<String> args) => BatchApplication(
         'token': 'XXXXXX',
         'tokens': ['XXXXXX', 'YYYYYY'],
       },
-    )..run();
+    );
 
 class ShouldBeOutputParametersJob implements ScheduledJobBuilder {
   @override

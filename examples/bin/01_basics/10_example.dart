@@ -4,9 +4,9 @@
 
 import 'package:batch/batch.dart';
 
-void main(List<String> args) => BatchApplication(
+void main(List<String> args) => runWorkflow(
       jobs: [TestCallbacksJob()],
-    )..run();
+    );
 
 class TestCallbacksJob implements ScheduledJobBuilder {
   @override
